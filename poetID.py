@@ -1,3 +1,5 @@
+# This will pull out all the poets with their ID's from the DB
+
 import sqlite3
 from pprint import pprint
 
