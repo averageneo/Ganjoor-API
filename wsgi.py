@@ -62,8 +62,8 @@ def verses():
 
         order_count = 1
         while True:
-            order = g.cur.execute('SELECT * FROM verses WHERE id = ? AND order = ?',
-            ((random_verse + order_count), (verse_order + order_count)))
+            new_id = (random_verse + order_count)
+            order = g.cur.execute('SELECT * FROM verses WHERE id = ?', (new_id,))
             order_query = order.fetchone()
             if order_query[3] == 1:
                 break
@@ -71,14 +71,14 @@ def verses():
                 order_count += 1
         
         order_sum = verse_order+order_count
-        final_verse = ""
+        final_verse = []
         for i in range(random_verse, (random_verse + order_sum)):
             fianl_query = g.cur.execute('SELECT * FROM verses WHERE id = ?', (i,))
             final_fetch = fianl_query.fetchone()
             verse = str(final_fetch[4])
-            final_verse += f'{verse} \n'
-        
-        return final_verse
+            final_verse.append(verse)
+            
+        return jsonify(final_verse)
 
     return homepage()
 
