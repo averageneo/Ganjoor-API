@@ -1,6 +1,7 @@
 #!/bin/python 
 from flask import Flask, request, jsonify, g
 import sqlite3
+import poetID
 
 app = Flask(__name__)
 
@@ -18,8 +19,18 @@ def after_request(response):
     g.db.close()
     return response
 
+
+@app.route('/')
+def homepage():
+    return 'Welcome to Ganjoor-API'
+
+
 @app.route('/poets')
 def poets():
+    return jsonify(poetID.peotid())
+
+@app.route('/poet')
+def poet():
     if request.args.get('id'):
         try:
             poetid = request.args.get('id')
@@ -30,12 +41,15 @@ def poets():
         except TypeError:
             return 'شاعری با این مشخصات وجود ندارد'
     else:
-        return 'به مستندات سر بزنید تا با نحوه کار آشنا شوید'
+        return homepage()
 
-@app.route('/')
-def homepage():
-    return 'Welcome to Ganjoor-API'
 
+@app.route('/verses')
+def verses():
+    if request.args.get('verse') == 'random':
+        return 'TEST'
+    
+    return homepage()
 
 if __name__ == "__main__":
     app.run(debug=True)
