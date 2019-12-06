@@ -1,0 +1,18 @@
+import sqlite3
+from pprint import pprint
+
+connect = sqlite3.connect('database.sqlite')
+cursor = connect.cursor()
+
+cursor.execute('SELECT * FROM poets')
+rows = cursor.fetchall()
+
+poets = []
+for row in rows:
+    poet={
+    'Name': row[1],
+    'ID': row[0]
+    }
+    poets.append(poet)
+
+pprint(poets)
