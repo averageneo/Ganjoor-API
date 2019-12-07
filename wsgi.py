@@ -89,16 +89,23 @@ def verses():
         # Total verses of the random poem        
         order_sum = verse_order+order_count
 
-        final_verse = []
+        poem = []
         for i in range(random_verse, (random_verse + order_sum)):
-            fianl_query = g.cur.execute('SELECT * FROM verses WHERE id = ?', (i,))
-            final_fetch = fianl_query.fetchone()
-            verse = str(final_fetch[4])
-            final_verse.append(verse)
+            Select_whole_poem = g.cur.execute('SELECT * FROM verses WHERE id = ?', (i,))
+            fetch_poem = Select_whole_poem.fetchone()
+            verses = str(fetch_poem[4])
+            poem.append(verses)
 
         # Query for the Poet name
-        
-        return jsonify(final_verse)
+        Poem_ID = verse[1]
+        select_poems = g.cur.execute('SELECT * FROM poems WHERE id = ?', (Poem_ID,))
+        query_poems = select_poems.fetchone()
+        url = str(query_poems[3])
+        if bool(url) == True:
+            poet_name = url.split('/')[3]
+            poem.insert(0, poet_name)
+
+        return jsonify(poem)
 
     return homepage()
 
