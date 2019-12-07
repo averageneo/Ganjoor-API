@@ -1,9 +1,10 @@
 #!/bin/python 
-from flask import Flask, request, jsonify, g
+from flask import Flask, request, jsonify, g, render_template
 import sqlite3
 from random import randint
 
 app = Flask(__name__)
+
 
 def makedb():
      return sqlite3.connect('database.sqlite')
@@ -22,9 +23,9 @@ def after_request(response):
 
 @app.route('/')
 def homepage():
-    return 'Welcome to Ganjoor-API'
+    return render_template('index.html')
 
-
+# Decorator to show poets and their id's in JSON format
 @app.route('/poets')
 def poets():
     g.cur.execute('SELECT * FROM poets')
@@ -39,6 +40,7 @@ def poets():
 
     return jsonify(poets)
 
+# Decorator to show poets Biographies.
 @app.route('/poet')
 def poet():
     if request.args.get('id'):
@@ -52,37 +54,53 @@ def poet():
     else:
         return homepage()
 
+
+# Decorator to generate verses
 @app.route('/verses')
 def verses():
+    # Random verse request
     if request.args.get('verse') == 'random':
+
+        # Generates a random number for the rows in DB
         random_verse = randint(1, 1384003)
+        
+        # Selecting the random row ID in DB.
         verse_id = g.cur.execute('SELECT * FROM verses WHERE id = ?', (random_verse,))
         verse = verse_id.fetchone()
+        
+        # Checking verse order in DB
         verse_order = int(verse[3])
 
-        order_count = 1
+        """
+        each verse is in one field in DB, I have to check it's order so I can get next and previous
+        related verses the random verse chosen by user.
+
+        """
+        order_count = 1 # Helps me to see how many times While_loop has been run.
         while True:
-            new_id = (random_verse + order_count)
+            new_id = (random_verse + order_count) # Get the next verse of the random verse
             order = g.cur.execute('SELECT * FROM verses WHERE id = ?', (new_id,))
             order_query = order.fetchone()
-            if order_query[3] == 1:
-                break
+            if order_query[3] == 0: # checks if the next verse is related to random one
+                break 
             else:
                 order_count += 1
-        
+
+        # Total verses of the random poem        
         order_sum = verse_order+order_count
+
         final_verse = []
         for i in range(random_verse, (random_verse + order_sum)):
             fianl_query = g.cur.execute('SELECT * FROM verses WHERE id = ?', (i,))
             final_fetch = fianl_query.fetchone()
             verse = str(final_fetch[4])
             final_verse.append(verse)
-            
+
+        # Query for the Poet name
+        
         return jsonify(final_verse)
 
     return homepage()
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
