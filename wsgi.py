@@ -97,14 +97,29 @@ def verses():
             verses = str(fetch_poem[4])
             poem.append(verses)
 
-        # Query for the Poet name
+        ## Query for the Poet name and Poem category
         Poem_ID = verse[1]
         select_poems = g.cur.execute('SELECT * FROM poems WHERE id = ?', (Poem_ID,))
         query_poems = select_poems.fetchone()
+
+
+        # Poem category
+        category_id = int(query_poems[1])
+        select_category  = g.cur.execute('SELECT * FROM categories WHERE id = ?', (category_id,))
+        fetch_category = select_category.fetchone()
+        poem_category = fetch_category[2]
+        poem.insert(0, str(poem_category))
+
+        # poet name
         url = str(query_poems[3])
         if bool(url) == True:
             poet_name = url.split('/')[3]
+            poet_name = poets_name_glossary[poet_name]
             poem.insert(0, poet_name)
+
+
+
+
 
         return jsonify(poem)
 
