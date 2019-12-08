@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify, g, render_template
 import sqlite3
 from random import randint
+from poets_glossary import poets_name_glossary
 
 app = Flask(__name__)
 
@@ -108,6 +109,7 @@ def verses():
         return jsonify(poem)
 
     return homepage()
+
 
 if __name__ == "__main__":
     app.run(debug=True)

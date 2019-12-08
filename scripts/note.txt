@@ -1,0 +1,4 @@
+This directory contains some scripts which I've written to do
+different stuff on the main project and It's not part of the code,
+just in case I'll leave them here.
+
