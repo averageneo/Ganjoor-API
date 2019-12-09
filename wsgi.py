@@ -56,39 +56,58 @@ def poet():
         return homepage()
 
 
+
+
+def random_verse_generator():
+    # Generates a random number for the rows in DB
+    random_verse = randint(1, 1384003)
+    
+    # Selecting the random row ID in DB.
+    verse_id = g.cur.execute('SELECT * FROM verses WHERE id = ?', (random_verse,))
+    verse = verse_id.fetchone()
+    
+    # Checking verse order in DB
+    verse_order = int(verse[3])
+
+    """
+    each verse is in one field in DB, I have to check it's order so I can get next and previous
+    related verses the random verse chosen by user.
+
+    """
+    order_count = 1 # Helps me to see how many times While_loop has been run.
+    while True:
+        new_id = (random_verse + order_count) # Get the next verse of the random verse
+        order = g.cur.execute('SELECT * FROM verses WHERE id = ?', (new_id,))
+        order_query = order.fetchone()
+        if order_query[3] == 0: # checks if the next verse is related to random one
+            break 
+        else:
+            order_count += 1
+
+    # Total verses of the random poem        
+    order_sum = verse_order+order_count    
+    return order_sum, random_verse, verse
+    
+
+
 # Decorator to generate verses
 @app.route('/verses')
 def verses():
     # Random verse request
-    if request.args.get('verse') == 'random':
+    verse_req = request.args.get('verse') 
+    # less than helps user the get poems with limited verses count
+    lessthan = request.args.get('lessthan')
+    if verse_req == 'random':
+        if lessthan is not None:
+            if int(lessthan) < 3:
+                return '"Lessthan" argument can not be less than 3!'
 
-        # Generates a random number for the rows in DB
-        random_verse = randint(1, 1384003)
-        
-        # Selecting the random row ID in DB.
-        verse_id = g.cur.execute('SELECT * FROM verses WHERE id = ?', (random_verse,))
-        verse = verse_id.fetchone()
-        
-        # Checking verse order in DB
-        verse_order = int(verse[3])
-
-        """
-        each verse is in one field in DB, I have to check it's order so I can get next and previous
-        related verses the random verse chosen by user.
-
-        """
-        order_count = 1 # Helps me to see how many times While_loop has been run.
-        while True:
-            new_id = (random_verse + order_count) # Get the next verse of the random verse
-            order = g.cur.execute('SELECT * FROM verses WHERE id = ?', (new_id,))
-            order_query = order.fetchone()
-            if order_query[3] == 0: # checks if the next verse is related to random one
-                break 
-            else:
-                order_count += 1
-
-        # Total verses of the random poem        
-        order_sum = verse_order+order_count
+            while True:
+                order_sum, random_verse, verse = random_verse_generator()
+                if int(order_sum) < int(lessthan):
+                    break
+        else:
+            order_sum, random_verse, verse = random_verse_generator()
 
         poem = []
         for i in range(random_verse, (random_verse + order_sum)):
@@ -108,7 +127,8 @@ def verses():
         select_category  = g.cur.execute('SELECT * FROM categories WHERE id = ?', (category_id,))
         fetch_category = select_category.fetchone()
         poem_category = fetch_category[2]
-        poem.insert(0, str(poem_category))
+        if poem_category not in poets_name_glossary.values() :    
+            poem.insert(0, str(poem_category))
 
         # poet name
         url = str(query_poems[3])
@@ -117,13 +137,12 @@ def verses():
             poet_name = poets_name_glossary[poet_name]
             poem.insert(0, poet_name)
 
-
-
-
-
         return jsonify(poem)
 
-    return homepage()
+    else:
+        return 'Are you sure of the Request?!'
+
+    
 
 
 if __name__ == "__main__":
