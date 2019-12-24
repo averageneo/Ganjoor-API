@@ -22,7 +22,7 @@
 	سپس وارد دایرکتوری اصلی شده و دستور زیر را وارد کنید:
 </div>
 
-`python wsgi.py`
+`flask run`
 <br />
 
 <div dir="rtl">

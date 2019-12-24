@@ -76,7 +76,10 @@ def verses(poet=None):
     
     return query(verse)
 
+@app.route('/glossary')
+def glossary():
+    return poets_name_glossary
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
