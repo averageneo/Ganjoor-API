@@ -9,9 +9,12 @@
     font-style: normal;
 } 
 
+nav { 
+    font-family: 'Vazir';
+    direction: rtl;
+}
 
-
-p {
+p { 
     font-family: 'Vazir';
     direction: rtl;
     text-align: right;

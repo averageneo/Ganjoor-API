@@ -6,7 +6,7 @@ from poets_glossary import poets_name_glossary
 from verses_query import query
 
 app = Flask(__name__)
-
+app.url_map.strict_slashes = False
 
 def makedb():
      return sqlite3.connect('database.sqlite')
@@ -58,8 +58,6 @@ def poet():
 
 
 # Decorator to generate verses
-@app.route('/random')
-@app.route('/random/<poet>')
 @app.route('/random/')
 @app.route('/random/<poet>/')
 def verses(poet=None):
