@@ -9,13 +9,37 @@
     font-style: normal;
 } 
 
-nav { 
-    font-family: 'Vazir';
-    direction: rtl;
-}
 
-p { 
-    font-family: 'Vazir';
-    direction: rtl;
+body {
+    background-color: #333333;
+  }
+  .blog{
+  float: right;
+  margin-right: 64px;
+  color: wheat;
+  }
+  h2.blogtitle {
+    float: right;
+  }
+  p.blogtext {
+    float: right;
+    height: 124px;
+    width: 914px;
+    margin-top: 103px;
     text-align: right;
-}
+    
+  }
+  .sitetitle{
+    padding-left: 47%;
+    color: burlywood;
+  }
+  
+  
+  .headertop {
+    height: 70px;
+  }
+ 
+  a {
+    color: powderblue;
+    text-decoration: none;
+  }
