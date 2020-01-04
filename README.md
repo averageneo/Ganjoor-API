@@ -11,12 +11,19 @@
 	<h3>نصب روی سرور شخصی</h3>
 	
 
-ابتدا دیتابیس <a href='https://github.com/ganjoor/ganjoor-db'>گنجور </a> رو clone کنید:
+ابتدا دیتابیس <a href='https://github.com/ganjoor/ganjoor-db'>گنجور </a> را lone کنید:
 
 </div>
 
+`git clone https://github.com/ganjoor/ganjoor-db`
+
 <div dir="rtl">
-	ابتدا دستور زیر را در خط فرمان وارد کنید:
+	پرونده <code>dump.sql.gz</code> را از حالت فشرده خارج کنید:
+</div>
+
+
+<div dir="rtl">
+	حال دستور زیر را در خط فرمان وارد کنید:
 </div>
 
 `sudo pip install -r requirements.txt`
