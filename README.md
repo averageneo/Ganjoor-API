@@ -19,10 +19,10 @@
 
 <div dir="rtl">
 	پرونده <code>dump.sql.gz</code> را از حالت فشرده خارج کنید:
-	
-`tar -zxvf dump.sql.gz`
 
 </div>
+
+`tar -zxvf dump.sql.gz`
 
 
 <div dir="rtl">
