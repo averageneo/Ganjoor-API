@@ -18,13 +18,15 @@
 `git clone https://gitlab.com/prp-e/database-ganjoor`
 
 <div dir="rtl">
-	پرونده <code>database.zip</code>
+	پرونده <code>database.zip</code> را از حالت فشرده خارج کنید:
 
 </div>
 
-`cd ganjoor-db/data && gzip -d dump.sql.gz && mv dump.sql 
+`unzip database.zip`
+
 
 <div dir="rtl">
+	حال فایل database.sqlite را در کنار پرونده‌هایی که از این ریپو clone می‌کنید قرار بدهید.
 	حال دستور زیر را در خط فرمان وارد کنید:
 </div>
 
