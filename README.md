@@ -11,6 +11,9 @@
 	<h3>نصب روی سرور شخصی</h3>
 </div>
 
+ابتدا دیتابیس <a href='https://github.com/ganjoor/ganjoor-db'>گنجور </a> رو clone کنید:
+
+
 <div dir="rtl">
 	ابتدا دستور زیر را در خط فرمان وارد کنید:
 </div>
