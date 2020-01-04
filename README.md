@@ -11,7 +11,7 @@
 	<h3>نصب روی سرور شخصی</h3>
 	
 
-ابتدا دیتابیس <a href='https://github.com/ganjoor/ganjoor-db'>گنجور </a> را lone کنید:
+ابتدا دیتابیس <a href='https://github.com/ganjoor/ganjoor-db'>گنجور </a> را clone کنید:
 
 </div>
 
@@ -19,6 +19,7 @@
 
 <div dir="rtl">
 	پرونده <code>dump.sql.gz</code> را از حالت فشرده خارج کنید:
+`tar -zxvf dump.sql.gz`
 </div>
 
 
