@@ -4,10 +4,10 @@ import sqlite3
 from random_verse_generator import random_verse_generator
 from poets_glossary import poets_name_glossary
 from verses_query import query
+ 
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
-
 def makedb():
      return sqlite3.connect('database.sqlite')
 
@@ -56,12 +56,11 @@ def poet():
     else:
         return homepage()
 
-
 # Decorator to generate verses
 @app.route('/random/')
 @app.route('/random/<poet>/')
 def verses(poet=None):
-    if poet == None:
+    if poet is None:
         random_verse = random_verse_generator()
         # Selecting the random row ID in DB.
         verse_id = g.cur.execute('SELECT * FROM verses WHERE id = ?', (random_verse,))
@@ -79,7 +78,6 @@ def verses(poet=None):
 @app.route('/glossary')
 def glossary():
     return poets_name_glossary
-
 
 if __name__ == "__main__":
     app.run()
