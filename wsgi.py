@@ -71,12 +71,12 @@ def verses(poet=None):
     else:
         random_poem_id = random_verse_generator(poet)
         if random_poem_id == 'Error':
-            return 'No poet with such a name'
+            return 'No poet with this name'
         else:    
             verse_id = g.cur.execute('SELECT * FROM verses WHERE poemId = ?', (random_poem_id,))
             verse = verse_id.fetchone()
     
-    return query(verse)
+    return jsonify(query(verse))
 
 
 @app.route('/glossary')
