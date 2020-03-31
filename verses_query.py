@@ -50,4 +50,4 @@ def query(verse):
         poet_name = poets_name_glossary[poet_name]
         poem.insert(0, poet_name)
 
-    return jsonify(poem)
+    return poem
