@@ -13,15 +13,14 @@ def random_verse_generator(poet=None):
         poems = select_poems.fetchall()
 
         id = []
-        for each_tuple in poems:
-            if each_tuple[3] == '':
+        for each_row in poems:
+            if each_row[3] == '':
                 continue
 
-            url_feild = each_tuple[3]
-            print(url_feild)
+            url_feild = each_row[3]
             poet_name = url_feild.split('/')[3]
             if poet == poet_name:
-                id.append(each_tuple[0])
+                id.append(each_row[0])
         
         id_lenght = len(id)
         random_poemID =  randint(0, id_lenght)
