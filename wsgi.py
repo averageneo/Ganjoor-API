@@ -1,5 +1,4 @@
-#!/bin/python 
-from flask import Flask, request, jsonify, g, render_template, url_for
+from flask import Flask, request, jsonify, g, render_template
 import sqlite3
 from random_verse_generator import random_verse_generator
 from poets_glossary import poets_name_glossary
@@ -27,7 +26,8 @@ def after_request(response):
 def homepage():
     return render_template('index.html')
 
-# Decorator to show poets and their id's in JSON format
+
+# Decorator to show poets and their id's in JSON text format
 @app.route('/poets')
 def poets():
     g.cur.execute('SELECT * FROM poets')
@@ -35,26 +35,29 @@ def poets():
     poets = []
     for row in rows:
         poet={
-        'Name': row[1],
-        'ID': row[0]
+            'Name': row[1],
+            'ID': row[0]
         }
+        
         poets.append(poet)
-
     return jsonify(poets)
 
+
 # Decorator to show poets Biographies.
-@app.route('/poet')
-def poet():
-    if request.args.get('id'):
-        try:
-            poetid = request.args.get('id')
+@app.route('/poet/<name_id>')
+def poet(name_id=None):
+    if name_id is not None:
+        if any(x.isalpha() for x in name_id) == False:
+            poetid = name_id
             poet_info = g.cur.execute('SELECT * FROM poets WHERE id = ?', (poetid,))
-            poet = poet_info.fetchone()
-            return jsonify(poet[3])
-        except TypeError:
-            return 'شاعری با این مشخصات وجود ندارد'
-    else:
-        return homepage()
+        else:
+            poet_english_name = name_id
+            poet_persian_name = poets_name_glossary.get(name_id)
+            poet_info = g.cur.execute('SELECT * FROM poets WHERE name = ?', (poet_persian_name,))
+        
+        poet = poet_info.fetchone()
+        return jsonify(poet[3])
+
 
 # Decorator to generate verses
 @app.route('/random/')
@@ -75,9 +78,11 @@ def verses(poet=None):
     
     return query(verse)
 
+
 @app.route('/glossary')
 def glossary():
-    return poets_name_glossary
+    return jsonify(poets_name_glossary)
+
 
 if __name__ == "__main__":
     app.run()
